@@ -1,33 +1,36 @@
 import os
-import subprocess
 
 def GetIP():
-    TODO 
-    #touch oldip.txt currentip.txt
-    #rm oldip.txt
-    #mv currentip.txt oldip.txt
-    #curl ifconfig.me > currentip.txt
+  os.system("touch oldip.txt currentip.txt")
+  os.system("rm oldip.txt")
+  os.system("mv currentip.txt oldip.txt")
+  os.system("ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}' > currentip.txt")
 
 def DidItChange():
-    TODO
-    #open oldip.txt
-    #open currentip.txt
-    #compare the 2 files
-    #return true if there was change
-    #false otherwise
+  old = open("oldip.txt", "r")
+  current = open("currentip.txt", "r")
+  oldip = old.readline()
+  currentip = current.readline()
+  old.close()
+  current.close()
+  return oldip != currentip
 
 def Notify():
-    TODO
-    #touch config.txt
-    #open config.txt to get the email address and phone number
-    #open currentip.txt
-    #send an email
-    #curl -X POST http://textbelt.com/text -d number=phonenumber -d "message=Your IP address has changed to newip"
+  os.system("touch config.txt")
+  config = open("config.txt")
+  new = open("currentip.txt")
+  phonenumber = config.read(10).strip('\n')
+  emailaddr = config.read().strip('\n')
+  newip = new.read().strip('\n')
+  #send an email
+  sms = 'curl -X POST http://textbelt.com/text -d number=%s -d "message=Your IP address has changed to %s"' % (phonenumber, newip)
+  os.system(sms)
+  config.close()
 
 def main():
-    GetIP()
-    if(DidItChange()):
-        Notify()
+  GetIP()
+  if(DidItChange()):
+    Notify()
 
 if __name__ == "__main__":
-    main()
+  main()
