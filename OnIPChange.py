@@ -4,7 +4,7 @@ def GetIP():
   os.system("touch oldip.txt currentip.txt")
   os.system("rm oldip.txt")
   os.system("mv currentip.txt oldip.txt")
-  os.system("ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}' > currentip.txt")
+  os.system("curl ifconfig.me > currentip.txt")
 
 def DidItChange():
   old = open("oldip.txt", "r")
