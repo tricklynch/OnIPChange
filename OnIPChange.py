@@ -22,7 +22,7 @@ def Notify():
   phonenumber = config.read(10).strip('\n')
   emailaddr = config.read().strip('\n')
   newip = new.read().strip('\n')
-  #send an email
+  #TODO send an email
   sms = 'curl -X POST http://textbelt.com/text -d number=%s -d "message=Your IP address has changed to %s"' % (phonenumber, newip)
   os.system(sms)
   config.close()
